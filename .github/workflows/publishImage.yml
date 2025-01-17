@@ -30,7 +30,7 @@ on:
 # DOCKERHUB_SLUG=foxxmd/multi-scrobbler
 # GHCR_SLUG=ghcr.io/foxxmd/multi-scrobbler
 #
-# Then add/modify them in the below ENV
+# Then add/modify registry slugs in the below ENV
 env:
   ANY_SLUGS: ${{ vars.DOCKERHUB_SLUG != '' ||  vars.GHCR_SLUG != '' }}
 

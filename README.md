@@ -18,3 +18,27 @@ The workflows here provide a jumping off point for building and publishing docke
   * Only builds if PR has the label `safe to test` to avoid security issues when using [`pull_request_target`](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#pull_request_target)
   * Images are tagged with `{prNumber}` EX `pr-152` and `APP_BUILD_VERSION` is `{prNumber}-{shortSHA}` EX `pr-152-edad367`
   * Comments on PR with image:tag after image is published and updates when PR is updated
+
+
+## Enable Multi-Registry Publishing
+
+The workflows are already configured for pushing to [Docker Hub](https://hub.docker.com/) and [Github Packages (GHCR)](https://docs.github.com/en/packages/learn-github-packages/introduction-to-github-packages). All you need to do is setup some variables/secrets in your repository.
+
+* Go to repository settings -> secrets and variables -> actions
+  * Add repository secrets
+    * `DOCKER_USERNAME` - your dockerhub username
+    * `DOCKER_PASSWORD` - your dockerhub password
+  * Add repository **variables**
+    * `DOCKERHUB_IMAGE_NAME` - the full name of the dockerhub image IE `foxxmd/my-project-name`
+    * `GHCR_IMAGE_NAME` - the full name of the GHCR image IE `ghcr.io/foxxmd/my-project-name`
+    * If neither of the above variables are included then the job will not run
+* Go to repository settings -> Actions -> General
+  *  Action permissions -> **Allow all actions...**
+  * Workflow permissions -> **Read and write permissions**
+  * Save
+
+The workflow will only push to each registry if the corresponding `_IMAGE_NAME` variable is not empty, so you need to fill in the `_IMAGE_NAME` variable for the registries you want to push to and can ignore the others.
+
+### Additional/Custom Registry
+
+Each workflow is annotated with comments specifying where it needs to be modified if you want to include additional registries. Look for `add/modify additional registries here` and `add additional registry slugs here` to find those spots. You will need to setup your own repo var/secrets.
